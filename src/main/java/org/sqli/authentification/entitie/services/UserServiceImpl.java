@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.sqli.authentification.dao.Group;
+import org.sqli.authentification.dao.HttpResponse;
 import org.sqli.authentification.dao.User;
 import org.sqli.authentification.entitie.repository.UserRepository;
 
@@ -14,7 +15,7 @@ import static org.springframework.http.HttpStatus.*;
 @Service
 public class UserServiceImpl implements UserService{
     public static final String AUTHENTICATION_ERROR = "Authentication error";
-    Group group =new Group(AUTHENTICATION_ERROR);
+    HttpResponse httpResponse =new HttpResponse(AUTHENTICATION_ERROR);
     private UserRepository userRepository;
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
@@ -22,7 +23,7 @@ public class UserServiceImpl implements UserService{
     }
     public HttpEntity<? extends Object>  validateLogin(String email, String password){
         if (getUserByPassword(password) == null || getUserByEmail(email) == null){
-            return new ResponseEntity<>(group, NOT_FOUND);
+            return new ResponseEntity<>(httpResponse, NOT_FOUND);
         }
         return new ResponseEntity<>(getUserByEmail(email) , OK);
 }
